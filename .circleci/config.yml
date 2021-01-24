@@ -49,5 +49,5 @@ workflows:
   execute_bulk:
     jobs:
       - build_backend
-      - build_frontend
-      - build_cloudfront
+      # - build_frontend
+      # - build_cloudfront
