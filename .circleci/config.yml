@@ -27,23 +27,23 @@ jobs:
         name: cloudformation build via AWS CLI
         command: aws cloudformation deploy --stack-name backend --template-file .circleci/files/backend.yml
 
-  build_frontend:
-    docker:
-      - image: amazon/aws-cli
-    steps:
-    - checkout
-    - run:
-        name: cloudformation build via AWS CLI
-        command: aws cloudformation deploy --stack-name frontend --template-file .circleci/files/frontend.yml
+  # build_frontend:
+  #   docker:
+  #     - image: amazon/aws-cli
+  #   steps:
+  #   - checkout
+  #   - run:
+  #       name: cloudformation build via AWS CLI
+  #       command: aws cloudformation deploy --stack-name frontend --template-file .circleci/files/frontend.yml
 
-  build_cloudfront:
-    docker:
-      - image: amazon/aws-cli
-    steps:
-    - checkout
-    - run:
-        name: cloudformation build via AWS CLI
-        command: aws cloudformation deploy --stack-name cloudfront --template-file .circleci/files/cloudsfront.yml
+  # build_cloudfront:
+  #   docker:
+  #     - image: amazon/aws-cli
+  #   steps:
+  #   - checkout
+  #   - run:
+  #       name: cloudformation build via AWS CLI
+  #       command: aws cloudformation deploy --stack-name cloudfront --template-file .circleci/files/cloudsfront.yml
 
 workflows:
   execute_bulk:
@@ -51,4 +51,3 @@ workflows:
       - build_backend
       - build_frontend
       - build_cloudfront
-      - destroy-environment
