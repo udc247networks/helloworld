@@ -50,6 +50,7 @@ jobs:
       - run:
           name: Build front-end
           command: |
+            mkdir frontend
             cd frontend
             npm install
       - save_cache:
@@ -66,13 +67,22 @@ jobs:
       - run:
           name: Back-end build
           command: |
+            mkdir backend
             cd backend
             npm install
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
 
-
+frontend-lint:
+    docker:
+      - image: circleci/node:10-browsers
+    steps:
+      - checkout
+      # Install project dependencies
+      - run:
+          name: Install local dependencies
+          command: cd frontend && npm install
 
 
 
@@ -101,6 +111,7 @@ workflows:
     jobs:
     - build-frontend
     - build-backend
+    - frontend-lint
       # - build_backend
       # - buildnpm
       # - build_frontend
