@@ -39,6 +39,20 @@ jobs:
         name: cloudformation build via AWS CLI
         command: aws cloudformation deploy --stack-name backend --template-file .circleci/files/backend.yml
 
+jobs:
+  buildnpm:
+    docker:
+      - image: circleci/node:10.15.3
+    steps:
+    - checkout
+    - run:
+          name: update-npm
+          command: "sudo npm install -g npm@latest"
+    - run:
+          name: test
+          command: npm test
+
+
   # build_frontend:
   #   docker:
   #     - image: amazon/aws-cli
@@ -61,5 +75,6 @@ workflows:
   execute_bulk:
     jobs:
       - build_backend
+      - buildnpm
       # - build_frontend
       # - build_cloudfront
