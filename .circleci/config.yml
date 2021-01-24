@@ -1,19 +1,18 @@
 version: 2.1
 
-aws:
-    docker:
-      - image: amazon/aws-cli
+
 
 jobs:
   build_deploy:
-    executor: aws
+    docker:
+      - image: amazon/aws-cli
     steps:
     - checkout
     - run:
-        name: Installing AWS CLI
-        command: sudo apt-get update | sudo apt install python3-pip | sudo pip3 install awsebcli --upgrade 
+        name: cloudformation build via AWS CLI
+        command: aws cloudformation create-stack --stack-name project2-2021-Network --template-body file://network.yml --parameters file://network-parameters.json
 
 workflows:
   execute_bulk:
     jobs:
-    - build_deploy
+      - build_deploy
