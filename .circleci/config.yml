@@ -1,19 +1,18 @@
 version: 2.1
 
+aws:
+    docker:
+      - image: amazon/aws-cli
+
 jobs:
   build_deploy:
-    machine:
-      image: ubuntu-2004:202010-01
-      steps:
+    executor: aws
+    steps:
     - checkout
     - run:
         name: Installing AWS CLI
-        command: |
-        sudo apt-get update
-        sudo apt install python3-pip
-        sudo pip3 install awsebcli --upgrade
+        command: sudo apt-get update | sudo apt install python3-pip | sudo pip3 install awsebcli --upgrade 
 
 workflows:
-  execude_bulk:
   jobs:
-    -build_deploy
+    - build_deploy
