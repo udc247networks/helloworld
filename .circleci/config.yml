@@ -1,16 +1,9 @@
 version: 2.1
 
 commands:
-  revert-migration:
-    description: Revert the last migration if successfully run in the current workflow.
-    steps:
-      - run:
-          name: "Revert migration"
-          command: npm run migrations:revert
-          when: on_fail
 
   destroy-environment:
-    description: "destroy environment s3 bucket and delete cloudformation stack"
+    description: "destroy environment "
     parameters:
       bucket_name:
         type: string
@@ -28,44 +21,18 @@ commands:
           command:  aws cloudformation delete-stack --stack-name << parameters.cf_stack >>
           when: on_fail
 
-  destroy-environment-linux:
-    description: "destroy environment s3 bucket and delete cloudformation stack"
-    parameters:
-      bucket_name:
-        type: string
-        default: ""
-      cf_stack:
-        type: string
-        default: "" 
-    steps:
-      - run:
-          name: "install aws "
-          command: |
-                curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-                unzip awscliv2.zip
-                ./aws/install
-          when: on_fail
-      - run:
-          name: "Delete S3 Bucket"
-          command: |
-                aws s3 rb s3://<< parameters.bucket_name >> --force  --region "us-west-2"
-          when: on_fail
-      - run:
-          name: "Delete Cloudformation Stack"
-          command:  aws cloudformation delete-stack --stack-name << parameters.cf_stack >>
-          when: on_fail
 
 
 
 jobs:
-  # build_backend:
-  #   docker:
-  #     - image: amazon/aws-cli
-  #   steps:
-  #   - checkout
-  #   - run:
-  #       name: cloudformation build via AWS CLI
-  #       command: aws cloudformation deploy --stack-name backend --template-file .circleci/files/backend.yml
+  build_backend:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+    - checkout
+    - run:
+        name: cloudformation build via AWS CLI
+        command: aws cloudformation deploy --stack-name backend --template-file .circleci/files/backend.yml
 
   build_frontend:
     docker:
@@ -76,18 +43,18 @@ jobs:
         name: cloudformation build via AWS CLI
         command: aws cloudformation deploy --stack-name frontend --template-file .circleci/files/frontend.yml
 
-  # build_cloudfront:
-  #   docker:
-  #     - image: amazon/aws-cli
-  #   steps:
-  #   - checkout
-  #   - run:
-  #       name: cloudformation build via AWS CLI
-  #       command: aws cloudformation deploy --stack-name cloudfront --template-file .circleci/files/cloudfront.yml
+  build_cloudfront:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+    - checkout
+    - run:
+        name: cloudformation build via AWS CLI
+        command: aws cloudformation deploy --stack-name cloudfront --template-file .circleci/files/cloudsfront.yml
 
 workflows:
   execute_bulk:
     jobs:
-      # - build_backend
+      - build_backend
       - build_frontend
-      # - build_cloudfront
+      - build_cloudfront
