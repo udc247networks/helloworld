@@ -10,7 +10,7 @@ jobs:
     - checkout
     - run:
         name: cloudformation build via AWS CLI
-        command: aws cloudformation create-stack --stack-name backend --template-file backend.yml 
+        command: aws cloudformation deploy --stack-name backend --template-file backend.yml 
 
 workflows:
   execute_bulk:
