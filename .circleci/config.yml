@@ -74,7 +74,7 @@ jobs:
           paths: [backend/node_modules]
           key: backend-build
 
-funend:
+  funend:
     docker:
       - image: circleci/node:10-browsers
     steps:
