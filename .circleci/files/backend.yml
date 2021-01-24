@@ -3,7 +3,7 @@ Description: >
 
 Parameters:
   ID:
-    Description: Unique identifier.
+    Description: "mc2021udacity"
     Type: String
 
 Resources:
