@@ -2,17 +2,29 @@ version: 2.1
 
 commands:
 
-  destroy-environment:
-    description: "destroy environment "
+  destroy_environment:
     parameters:
-      cf_stack:
+      when_to_run:
         type: string
-        default: "" 
+        default: "on_fail"
     steps:
       - run:
-          name: "Delete Cloudformation Stack"
-          command:  aws cloudformation delete-stack --stack-name backend
+          name: Destroy Environments
+          command: |
+            aws delete-stack --stack-name backend
           when: on_fail
+
+  # destroy-environment:
+  #   description: "destroy environment "
+  #   parameters:
+  #     cf_stack:
+  #       type: string
+  #       default: "" 
+  #   steps:
+  #     - run:
+  #         name: "Delete Cloudformation Stack"
+  #         command:  aws cloudformation delete-stack --stack-name backend
+  #         when: on_fail
 
 
 
