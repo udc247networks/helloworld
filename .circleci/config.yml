@@ -5,20 +5,13 @@ commands:
   destroy-environment:
     description: "destroy environment "
     parameters:
-      bucket_name:
-        type: string
-        default: ""
       cf_stack:
         type: string
         default: "" 
     steps:
       - run:
-          name: "Delete S3 Bucket"
-          command: aws s3 rb s3://<< parameters.bucket_name >> --force  --region "us-west-2"
-          when: on_fail
-      - run:
           name: "Delete Cloudformation Stack"
-          command:  aws cloudformation delete-stack --stack-name << parameters.cf_stack >>
+          command:  aws cloudformation delete-stack --stack-name backend
           when: on_fail
 
 
