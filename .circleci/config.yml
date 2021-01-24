@@ -1,18 +1,18 @@
 version: 2.1
 
-commands:
+# commands:
 
-  destroy_environment:
-    parameters:
-      when_to_run:
-        type: string
-        default: "on_fail"
-    steps:
-      - run:
-          name: Destroy Environments
-          command: |
-            aws delete-stack --stack-name backend
-          when: on_fail
+#   destroy_environment:
+#     parameters:
+#       when_to_run:
+#         type: string
+#         default: "on_fail"
+#     steps:
+#       - run:
+#           name: Destroy Environments
+#           command: |
+#             aws delete-stack --stack-name backend
+#           when: on_fail
 
   # destroy-environment:
   #   description: "destroy environment "
@@ -30,27 +30,52 @@ commands:
 
 
 jobs:
-  build_backend:
-    docker:
-      - image: amazon/aws-cli
-    steps:
-    - checkout
-    - run:
-        name: cloudformation build via AWS CLI
-        command: aws cloudformation deploy --stack-name backend --template-file .circleci/files/backend.yml
+  # build_backend:
+  #   docker:
+  #     - image: amazon/aws-cli
+  #   steps:
+  #   - checkout
+  #   - run:
+  #       name: cloudformation build via AWS CLI
+  #       command: aws cloudformation deploy --stack-name backend --template-file .circleci/files/backend.yml
 
 
-  buildnpm:
+  build-frontend:
     docker:
-      - image: circleci/node:10.15.3
+      - image: circleci/node:13.8.0
     steps:
-    - checkout
-    - run:
-          name: update-npm
-          command: "sudo npm install -g npm@latest"
-    - run:
-          name: test
-          command: npm test
+      - checkout
+      - restore_cache:
+          keys: [frontend-build]
+      - run:
+          name: Build front-end
+          command: |
+            cd frontend
+            npm install
+      - save_cache:
+          paths: [frontend/node_modules]
+          key: frontend-build
+
+  build-backend:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys: [backend-build]
+      - run:
+          name: Back-end build
+          command: |
+            cd backend
+            npm install
+      - save_cache:
+          paths: [backend/node_modules]
+          key: backend-build
+
+
+
+
+
 
 
   # build_frontend:
@@ -74,7 +99,9 @@ jobs:
 workflows:
   execute_bulk:
     jobs:
-      - build_backend
-      - buildnpm
+    - build-frontend
+    - build-backend
+      # - build_backend
+      # - buildnpm
       # - build_frontend
       # - build_cloudfront
