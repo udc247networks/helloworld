@@ -39,7 +39,7 @@ jobs:
         name: cloudformation build via AWS CLI
         command: aws cloudformation deploy --stack-name backend --template-file .circleci/files/backend.yml
 
-jobs:
+
   buildnpm:
     docker:
       - image: circleci/node:10.15.3
