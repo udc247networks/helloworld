@@ -74,7 +74,7 @@ jobs:
           paths: [backend/node_modules]
           key: backend-build
 
-frontend-lint:
+funend:
     docker:
       - image: circleci/node:10-browsers
     steps:
@@ -107,11 +107,11 @@ frontend-lint:
   #       command: aws cloudformation deploy --stack-name cloudfront --template-file .circleci/files/cloudsfront.yml
 
 workflows:
-  execute_bulk:
+  execute_mark:
     jobs:
     - build-frontend
     - build-backend
-    - frontend-lint
+    - funend
       # - build_backend
       # - buildnpm
       # - build_frontend
