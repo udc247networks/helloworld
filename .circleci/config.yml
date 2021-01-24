@@ -2,30 +2,20 @@ version: 2.1
 
 
 
-# jobs:
-#   build_deploy:
-#     docker:
-#       - image: amazon/aws-cli
-#     steps:
-#     - checkout
-#     - run:
-#         name: cloudformation build via AWS CLI
-#         command: aws cloudformation deploy --stack-name backend --template-file backend.yml 
-
-
-create_infrastructure_backend:
-  docker:
-    - image: amazon/aws-cli
-  steps:
+jobs:
+  build_deploy:
+    docker:
+      - image: amazon/aws-cli
+    steps:
     - checkout
     - run:
-        name: Ensure backend infrastructure exist
-        command: |
-          aws cloudformation deploy \
-            --template-file .circleci/files/backend.yml \
-            --stack-name backend
+        name: cloudformation build via AWS CLI
+        command: aws cloudformation deploy --stack-name backend --template-file backend.yml 
+
+
+
 
 workflows:
   execute_bulk:
     jobs:
-      - create_infrastructure_backend
+      - build_deploy
