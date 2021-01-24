@@ -1,9 +1,7 @@
 version: 2.1
 
-
-
 jobs:
-  build_deploy:
+  build_backend:
     docker:
       - image: amazon/aws-cli
     steps:
@@ -12,10 +10,17 @@ jobs:
         name: cloudformation build via AWS CLI
         command: aws cloudformation deploy --stack-name backend --template-file .circleci/files/backend.yml
 
-
-
+  build_frontend:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+    - checkout
+    - run:
+        name: cloudformation build via AWS CLI
+        command: aws cloudformation deploy --stack-name frontend --template-file .circleci/files/frontend.yml
 
 workflows:
   execute_bulk:
     jobs:
-      - build_deploy
+      - build_backend
+      - build_frontend
