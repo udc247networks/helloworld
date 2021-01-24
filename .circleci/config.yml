@@ -14,5 +14,6 @@ jobs:
         command: sudo apt-get update | sudo apt install python3-pip | sudo pip3 install awsebcli --upgrade 
 
 workflows:
-  jobs:
+  execute_bulk:
+    jobs:
     - build_deploy
