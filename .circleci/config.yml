@@ -82,7 +82,7 @@ jobs:
       # Install project dependencies
       - run:
           name: Install local dependencies
-          command: mkdir fronend && cd frontend && npm install
+          command: mkdir frontend && cd frontend && npm install
 
 
 
