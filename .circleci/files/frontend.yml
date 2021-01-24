@@ -5,7 +5,7 @@ Parameters:
   ID:
     Description: Unique identifier.
     Type: String
-    Default: "mark01FE"
+    Default: "mark01fe"
 
 Resources:
   WebsiteBucket:
