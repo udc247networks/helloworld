@@ -40,62 +40,62 @@ jobs:
   #       command: aws cloudformation deploy --stack-name backend --template-file .circleci/files/backend.yml
 
 
-  build-frontend:
-    docker:
-      - image: circleci/node:13.8.0
-    steps:
-      - checkout
-      - restore_cache:
-          keys: [frontend-build]
-      - run:
-          name: Build front-end
-          command: |
-            mkdir frontend
-            cd frontend
-            npm install
-      - save_cache:
-          paths: [frontend/node_modules]
-          key: frontend-build
-
-  build-backend:
-    docker:
-      - image: circleci/node:13.8.0
-    steps:
-      - checkout
-      - restore_cache:
-          keys: [backend-build]
-      - run:
-          name: Back-end build
-          command: |
-            mkdir backend
-            cd backend
-            npm install
-      - save_cache:
-          paths: [backend/node_modules]
-          key: backend-build
-
-  funend:
-    docker:
-      - image: circleci/node:10-browsers
-    steps:
-      - checkout
-      # Install project dependencies
-      - run:
-          name: Install local dependencies
-          command: mkdir frontend && cd frontend && npm install
-
-
-
-
-
-  # build_frontend:
+  # build-frontend:
   #   docker:
-  #     - image: amazon/aws-cli
+  #     - image: circleci/node:13.8.0
   #   steps:
-  #   - checkout
-  #   - run:
-  #       name: cloudformation build via AWS CLI
-  #       command: aws cloudformation deploy --stack-name frontend --template-file .circleci/files/frontend.yml
+  #     - checkout
+  #     - restore_cache:
+  #         keys: [frontend-build]
+  #     - run:
+  #         name: Build front-end
+  #         command: |
+  #           mkdir frontend
+  #           cd frontend
+  #           npm install
+  #     - save_cache:
+  #         paths: [frontend/node_modules]
+  #         key: frontend-build
+
+  # build-backend:
+  #   docker:
+  #     - image: circleci/node:13.8.0
+  #   steps:
+  #     - checkout
+  #     - restore_cache:
+  #         keys: [backend-build]
+  #     - run:
+  #         name: Back-end build
+  #         command: |
+  #           mkdir backend
+  #           cd backend
+  #           npm install
+  #     - save_cache:
+  #         paths: [backend/node_modules]
+  #         key: backend-build
+
+  # funend:
+  #   docker:
+  #     - image: circleci/node:10-browsers
+  #   steps:
+  #     - checkout
+  #     # Install project dependencies
+  #     - run:
+  #         name: Install local dependencies
+  #         command: mkdir frontend && cd frontend && npm install
+
+
+
+
+
+  build_frontend:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+    - checkout
+    - run:
+        name: cloudformation build via AWS CLI
+        command: aws cloudformation deploy --stack-name backend --template-file .circleci/files/backend.yml
 
   # build_cloudfront:
   #   docker:
@@ -109,9 +109,9 @@ jobs:
 workflows:
   execute_mark:
     jobs:
-    - build-frontend
-    - build-backend
-    - funend
+    - build_frontend
+    # - build-backend
+    # - funend
       # - build_backend
       # - buildnpm
       # - build_frontend
